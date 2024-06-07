@@ -49,12 +49,7 @@ The Library Management System is a multi-user application designed to manage the
 3. Use the dashboard to manage sections and e-books.
 
 ##Screenshots (Demo)
-![image](https://github.com/AvinashShrivastav/Library-Management-System/assets/110047194/ccbee365-2ab5-4eb0-9c8e-f2a679fe8cc0)
-![image](https://github.com/AvinashShrivastav/Library-Management-System/assets/110047194/0018d4e9-2c22-4f03-81df-43397f75d3a0)
-![image](https://github.com/AvinashShrivastav/Library-Management-System/assets/110047194/ee81356e-dc38-4cd3-a816-5ff6fb524859)
-![image](https://github.com/AvinashShrivastav/Library-Management-System/assets/110047194/cba27ab8-1a40-41dd-8db5-b4c8e5e3b1f3)
-![image](https://github.com/AvinashShrivastav/Library-Management-System/assets/110047194/0f638cad-9bdb-439c-85a1-4dbc1fbf11bc)
-![image](https://github.com/AvinashShrivastav/Library-Management-System/assets/110047194/f417c5b4-c937-400d-ad58-4334f0c7f6cd)
+To be uploaded...
 
 
 ## License

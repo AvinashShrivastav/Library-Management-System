@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, send_file, jsonify
+from flask import Flask, render_template, redirect, url_for, request, send_file, jsonify, flash
 from flask import current_app as app
 from .models import *
 from datetime import datetime, timedelta
@@ -53,19 +53,38 @@ def download(book_id):
     book = Book.query.get(book_id)
     return send_file(BytesIO(book.content), as_attachment=True, download_name=f'{book.name}.pdf')
 
-@app.route('/request<int:user_id>/<int:book_id>', methods=['GET', 'POST'])
+@app.route('/request/<int:user_id>/<int:book_id>', methods=['GET', 'POST'])
 def request_book(user_id,book_id):
+
+    # Assuming this is inside a Flask route function
     book = Book.query.get(book_id)
     user = User.query.get(user_id)
+    if not book or not user:
+        return redirect('/some-error-page')
+
     if request.method == 'POST':
-        book.user_id = user_id
+        # Check if the book is already issued and not returned
+        existing_issue = BookIssue.query.filter_by(book_id=book_id, status='issued').first()
+        if existing_issue:
+            return render_template('request_send.html', book=book, user=user)
+
+        # Check if the user has already issued 5 or more books
+        issued_books_count = BookIssue.query.filter_by(user_id=user_id, status='issued').count()
+        if issued_books_count >= 5:
+            # You can use flash to show a message to the user or handle this case as needed
+            return render_template('request_send.html', book=book, user=user, error="You cannot issue more than 5 books.")
+
         req_days = int(request.form.get('req_days'))
-        book.date_issued = datetime.now()
-        book.return_date = datetime.now() + timedelta(days=req_days)
-        book.status = 'hold'
+        issue_date = datetime.now()
+        return_date = issue_date + timedelta(days=req_days)
+        
+        # Create a new BookIssue instance
+        new_issue = BookIssue(book_id=book_id, user_id=user_id, issue_date=issue_date, return_date=return_date, status='hold')
+        
+        # Add the new issue to the session and commit
+        db.session.add(new_issue)
         db.session.commit()
-        return render_template('allwell.html')
-        return redirect(f'/download{book_id}')
+        return redirect(f'/download/{book_id}')
     return render_template('request_send.html', book = book, user = user)
 
 @app.route('/librarian', methods=['GET', 'POST'])
@@ -73,7 +92,7 @@ def librarian():
     librarian = User.query.filter_by(role='librarian').first()
     books = Book.query.all()
     sections = Section.query.all()
-    return render_template('librarian_dashboard.html' , username = librarian.name, books = books,sections = sections)
+    return render_template('librarian_dashboard.html' , user = librarian, books = books,sections = sections)
 
 @app.route('/user/<int:user_id>', methods=['GET', 'POST'])
 def user_login(user_id):
@@ -84,10 +103,10 @@ def user_login(user_id):
 
 @app.route('/admin_req', methods=['GET', 'POST'])
 def admin_req():
-    books_on_hold = db.session.query(Book, User).join(User, User.id == Book.user_id).filter(Book.status == 'hold').all()
-    books_issued = db.session.query(Book, User).join(User, User.id == Book.user_id).filter(Book.status == 'issued').all()
-    return render_template('request_admin.html', requests=books_on_hold, issued = books_issued)
-
+    # Assuming BookIssue model has book_id and user_id as foreign keys to Book and User models respectively
+    books_on_hold = db.session.query(Book, User, BookIssue).join(BookIssue, BookIssue.book_id == Book.id).join(User, BookIssue.user_id == User.id).filter(BookIssue.status == 'hold').all()
+    books_issued = db.session.query(Book, User, BookIssue).join(BookIssue, BookIssue.book_id == Book.id).join(User, BookIssue.user_id == User.id).filter(BookIssue.status == 'issued').all()
+    return render_template('request_admin.html', requests=books_on_hold, issued=books_issued)
 
 @app.route('/grant/<int:user_id>/<int:book_id>', methods=['GET', 'POST'])
 def grant(user_id, book_id):
@@ -111,7 +130,7 @@ def add_section():
     return render_template('add_new_sec.html')
 
 
-@app.route('/add_book<int:section_id>', methods=['GET', 'POST'])
+@app.route('/add_book/<int:section_id>', methods=['GET', 'POST'])
 def add_book(section_id):
     section = Section.query.get(section_id)
     if request.method == 'POST':
@@ -129,7 +148,9 @@ def add_book(section_id):
     return render_template('add_new_book.html', section = section)
 
 
-@app.route('/lib_book/<int:section_id>', methods=['GET', 'POST'])
-def lib_book(section_id):
+@app.route('/lib_book/<int:user_id>/<int:section_id>', methods=['GET', 'POST'])
+def lib_book(user_id, section_id):
     books = Book.query.filter_by(section_id = section_id).all()
-    return render_template('librarian_book.html', books = books,section_id = section_id)
+    section = Section.query.get(section_id)
+    user = User.query.get(user_id)
+    return render_template('librarian_book.html', books = books,section = section, user = user)

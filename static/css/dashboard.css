@@ -190,10 +190,6 @@ input{
   padding: 10px;
 
 }
-.cross{
-  display: flex;
-  align-items: center;
-  justify-self: center;
-  color: red;
-  width: 15px;
+.container{
+  margin-top: 10px;
 }

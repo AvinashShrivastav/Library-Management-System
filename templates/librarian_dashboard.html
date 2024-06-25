@@ -29,6 +29,7 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link active" href="#">Books <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/admin_req">Book Requests</a>
         <a class="nav-link" href="#">Stats </a>
         <a class="nav-link" href="#">{{user.name}}</a>
       </div>
@@ -75,7 +76,7 @@
             <img class="sec-img" src="../static/images/history.jpeg" alt="Card image" >
             <div class="card-img-overlay">
                 <h4 class="book-title">{{ section.name }}</h4>
-                <p class="book-sec">Created on {{ section.date_created }}</p>
+                <p class="book-sec">Created on {{ section.date_created.strftime('%Y-%m-%d') }}</p>
                 <p class="book-sec">{{ section.description }}</p>
                 <!-- <button type="button" class="btn btn-primary open-modal-btn" data-toggle="modal" data-target="#addBookModal{{ section.id }}"
                     data-section-id="{{ section.id }}">Add Book</button> -->
@@ -91,87 +92,6 @@
 
     </div>
     <!-- book-section-ends -->
-
-    <!-- book-section ends -->
-     <!-- search-box start-->
-     <div class="navbar">
-      <a class="navbar-brand">Requests</a>
-  </div>
-  <!-- search-box end -->
-
-
-
-
-  <div class="request-table">
-
-      <!-- requested books section starts here  -->
-      <div class="heading">
-          <h2 class="navbar-brand">Requested</h2>
-      </div>
-
-      <table class="table table-hover table-bordered">
-          <thead class="bill-header cs">
-              <tr>
-                  <th>Book title</th>
-                  <th>User</th>
-                  <th>Action</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for request in requests%}
-              
-              <tr data-href="/req_receive/{{request[1].id}}/{{request[0].id}}">
-           
-                  <td>{{request[0].name}}</td>
-                  <td>{{request[1].name}}</td>
-
-                  <td>
-                      <a href="/reject" class="btn btn-danger" type="button">Reject</a>
-                      <a href="/grant/{{request[1].id}}/{{request[0].id}}" class="btn btn-success"
-                          type="button">Grant</a>
-                  </td>
-              
-
-              </tr>
-              
-              {% endfor %}
-          </tbody>
-      </table>
-      <!-- requested books section ends here  -->
-
-
-
-      <!-- issued books section starts here  -->
-      <div class="heading">
-          <h2 class="navbar-brand">Issued</h2>
-      </div>
-      <table class="table table-hover table-bordered">
-          <thead class="bill-header cs">
-              <tr>
-                  <th>Book title</th>
-                  <th>User</th>
-                  <th>Action</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for issue in issued%}
-              <a href="">
-                  <tr>
-                      <td>{{issue[0].name}}</td>
-                      <td>{{issue[1].name}}</td>
-                      <td>
-                          <a class="btn btn-danger" type="button">Revoke</a>
-                      </td>
-                  </tr>
-              </a>
-              {% endfor %}
-          </tbody>
-      </table>
-
-      <!-- completed books section ends here  -->
-
-  </div>
-  <!-- request-table ends -->
 
   </div>
   <!-- main-section end -->

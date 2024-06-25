@@ -48,72 +48,129 @@
         {% if user.books | length == 0 %}
         <h5>You have not read any books! </h5>
         {% else %}
-        <!-- current books section starts here  -->
-      <h2 class="navbar-brand">Current</h2>
+        <!-- current books section starts here -->
+        <h2 class="navbar-brand">Current</h2>
+        {% if issued_books %}
           <table class="table table-hover table-bordered">
-              <thead class="bill-header cs">
-                  <tr>
-                      <th>SL. No.</th>
-                      <th>Book title</th>
-                      <th>Author</th>
-                      <th>Section</th>
-                      <th>Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                {% for book in user.books %}
-                  <tr>
-                      <td>{{loop.index}}</td>
-                      <td>{{book.name}}</td>
-                      <td>{{book.author}}</td>
-                      <td>{{book.section}}</td>
-                      <td><a class="btn btn-warning" type="button">Return</a></td>
-                  </tr>
-                {% endfor %}
-              </tbody>
+            <thead class="bill-header cs">
+              <tr>
+                <th>SL. No.</th>
+                <th>Book title</th>
+                <th>Author</th>
+                <th>Section</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for book in issued_books %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td>{{ book.name }}</td>
+                  <td>
+                    {% for author in book.authors %}
+                      {% if loop.last %}
+                        {{ author.name }}
+                      {% else %}
+                        {{ author.name }},
+                      {% endif %}
+                    {% endfor %}
+                  </td>
+                  <td>{{ book.section.name }}</td>
+                  <td><a href="/return/{{user.id}}/{{book.id}}" class="btn btn-warning" type="button">Return</a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
           </table>
+        {% else %}
+          <p>No books have been issued to you at this time.</p>
         {% endif %}
-
+        
   <!-- current books section ends here  -->
 
+  <!-- hold books section starts here -->
+  <h2 class="navbar-brand">Books on hold</h2>
+  {% if hold_books %}
+    <div class="table-responsive table table-hover table-bordered results">
+      <table class="table table-hover table-bordered">
+        <thead class="bill-header cs">
+          <tr>
+            <th>SL. No.</th>
+            <th>Book title</th>
+            <th>Author</th>
+            <th>Section</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in hold_books %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ book.name }}</td>
+            <td>
+              {% for author in book.authors %}
+                {% if loop.last %}
+                  {{ author.name }}
+                {% else %}
+                  {{ author.name }},
+                {% endif %}
+              {% endfor %}
+            </td>
+            <td>{{ book.section.name }}</td>
+            <td><a href="/cancelrequest/{{user.id}}/{{book.id}}" class="btn btn-warning" type="button">Cancel</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>No books are currently on hold.</p>
+  {% endif %}
+  <!-- hold books section ends here -->
 
-
-  <!-- completed books section starts here  -->
+  <!-- completed books section starts here -->
   <h2 class="navbar-brand">Completed</h2>
-      <div class="table-responsive table table-hover table-bordered results">
-          <table class="table table-hover table-bordered">
-              <thead class="bill-header cs">
-                  <tr>
-                      <th>SL. No.</th>
-                      <th>Book title</th>
-                      <th>Author</th>
-                      <th>Section</th>
-                      <th>Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>01</td>
-                      <td>India</td>
-                      <td>Souvik Kundu</td>
-                      <td>Bootstrap Stuido</td>
-                      <td><a class="btn btn-success" type="button">View</a></td>
-                  </tr>
-                  <tr>
-                      <td>01</td>
-                      <td>India</td>
-                      <td>Souvik Kundu</td>
-                      <td>Bootstrap Stuido</td>
-                      <td><a class="btn btn-success" type="button">View</a></td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
-  <!-- completed books section ends here  -->
-
+  {% if returned_books %}
+    <div class="table-responsive table table-hover table-bordered results">
+      <table class="table table-hover table-bordered">
+        <thead class="bill-header cs">
+          <tr>
+            <th>SL. No.</th>
+            <th>Book title</th>
+            <th>Author</th>
+            <th>Section</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in returned_books %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ book.name }}</td>
+            <td>
+              {% for author in book.authors %}
+                {% if loop.last %}
+                  {{ author.name }}
+                {% else %}
+                  {{ author.name }},
+                {% endif %}
+              {% endfor %}
+            </td>
+            <td>{{ book.section.name }}</td>
+            <td><a href="/viewbookhistory/{{user.id}}/{{book.id}}" class="btn btn-warning" type="button">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>No completed books to display.</p>
+  {% endif %}
+  <!-- completed books section ends here -->
+  {% endif %}
       </div>
 
       
+ 
       
     
     </div> 

@@ -27,8 +27,9 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link active" href="templates\user_mybooks.html">My Books <span
-                        class="sr-only">(current)</span></a>
+                <a class="nav-link active" href="templates\user_mybooks.html">My Books</a>
+                <a class="nav-link" href="/admin_req">Book   <span
+                    class="sr-only">(current)</span></a>
                 <a class="nav-link" href="templates\user_books.html">Books</a>
                 <a class="nav-link" href="#">Stats</a>
             </div>
@@ -105,7 +106,7 @@
                 <tbody>
                     {% for issue in issued%}
                     <a href="">
-                        <tr>
+                        <tr data-toggle="modal" data-target="#requestModal">
                             <td>{{issue[0].name}}</td>
                             <td>{{issue[1].name}}</td>
                             <td>
@@ -126,6 +127,34 @@
 
     </div>
     <!-- main-section end -->
+
+
+<!-- Modal Structure -->
+<div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="requestModalLabel">Book Request</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6 class="book-title">Username: Jawaharlal Nehru</h6>
+        <p class="book-author">Days Requested: 5</p>
+        <p class="book-author">Book Title: The Discovery of British India</p>
+        <p class="book-sec">Book Section: History</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger">Reject</button>
+        <button type="button" class="btn btn-success">Grant</button>
+        <button type="button" class="btn btn-warning">View Book</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 
 

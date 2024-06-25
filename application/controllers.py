@@ -86,7 +86,52 @@ def request_book(user_id,book_id):
         db.session.commit()
         return redirect(f'/download/{book_id}')
     return render_template('request_send.html', book = book, user = user)
+@app.route('/userprofile/<int:user_id>', methods=['GET', 'POST'])
+def user_profile(user_id):
+    user = User.query.get(user_id)
+    book_issues = BookIssue.query.filter_by(user_id=user_id).all()
+    books = [Book.query.get(book_issue.book_id) for book_issue in book_issues]
+    return render_template('user_profile.html', user = user, user_issues = book_issues)
 
+@app.route("/cancelrequest/<int:user_id>/<int:book_id>", methods=['GET', 'POST'])
+def cancel_request(user_id, book_id):
+    book_issue = BookIssue.query.filter_by(user_id=user_id, book_id=book_id, status='hold').first()
+    if book_issue:
+        db.session.delete(book_issue)
+        db.session.commit()
+    return redirect(f'/user/{user_id}')
+
+@app.route('/return/<int:user_id>/<int:book_id>', methods=['GET', 'POST'])
+def return_book(user_id, book_id):
+    book_issue = BookIssue.query.filter_by(user_id=user_id, book_id=book_id, status='issued').first()
+    if book_issue:
+        book_issue.status = 'returned'
+        book_issue.return_date = datetime.now()
+        db.session.commit()
+
+    return redirect(f'/user/{user_id}')
+
+@app.route('/viewbookhistory/<int:user_id>/<int:book_id>', methods=['GET', 'POST'])
+def view_book_history(user_id, book_id):
+    book_issues = BookIssue.query.filter_by(user_id=user_id, book_id=book_id).all()
+    user = User.query.get(user_id)
+    return render_template('user_book_history.html', book_issues=book_issues, user = user)
+
+@app.route('/delete/<int:book_id>', methods=['GET', 'POST'])
+def delete_book(book_id):
+    book = Book.query.get(book_id)
+    if book:
+        db.session.delete(book)
+        db.session.commit()
+    return "Book deleted successfully"
+
+@app.route('/view/<int:book_id>', methods=['GET', 'POST'])
+def view_book(book_id):
+    # Query for the book's issue details
+    book_issues = BookIssue.query.filter_by(book_id=book_id).all()
+
+    # Pass the data to the template
+    return render_template('view_book.html', book_issues=book_issues)
 @app.route('/librarian', methods=['GET', 'POST'])
 def librarian():
     librarian = User.query.filter_by(role='librarian').first()
@@ -94,12 +139,19 @@ def librarian():
     sections = Section.query.all()
     return render_template('librarian_dashboard.html' , user = librarian, books = books,sections = sections)
 
+# Function to get books by status for a user
+def get_books_by_status(user_id, status):
+    book_issues = BookIssue.query.filter_by(user_id=user_id, status=status).all()
+    books = [Book.query.get(book_issue.book_id) for book_issue in book_issues]
+    return books
+
 @app.route('/user/<int:user_id>', methods=['GET', 'POST'])
 def user_login(user_id):
     user = User.query.get(user_id)
-
-    
-    return render_template('user_mybooks.html' , user = user)
+    issued_books = get_books_by_status(user_id = user_id, status='issued')
+    returned_books = get_books_by_status(user_id= user_id, status='returned')
+    hold_books = get_books_by_status(user_id = user_id, status='hold')
+    return render_template('user_mybooks.html' , user = user, issued_books = issued_books, hold_books = hold_books, returned_books = returned_books)
 
 @app.route('/admin_req', methods=['GET', 'POST'])
 def admin_req():

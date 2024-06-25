@@ -12,7 +12,7 @@ api = None
 def create_app():
     app = Flask(__name__)
     app.debug = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///new2_library.sqlite3'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///libmang.sqlite3'
     db.init_app(app)
     api = Api(app)
     app.app_context().push()

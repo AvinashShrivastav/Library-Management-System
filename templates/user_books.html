@@ -54,9 +54,11 @@
             </div>
             <div class="book-desc">
               <h5 class="book-title">{{book.name}}</h5>
-              <p class="book-author">{{book.author}}</p>
-              <p class="book-sec">{{book.section}}</p>
-              <a  href='/request{{user.id}}/{{book.id}}' class="btn btn-outline-primary">Request</a>
+              {% for author in book.authors %}
+              <p class="book-author">{{author.name}}</p>
+              {% endfor %}
+              <p class="book-sec">{{book.section.name}}</p>
+              <a href="/request/{{user.id}}/{{book.id}}" class="btn btn-outline-primary"> Request</a>
             </div>
           </div>
           {%endfor%}

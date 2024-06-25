@@ -32,11 +32,12 @@ class BookAuthor(db.Model):
 
 
 class BookIssue(db.Model):
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    request_id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     issue_date = db.Column(db.DateTime, nullable=True)
     return_date = db.Column(db.DateTime, nullable=True)
-    status = db.Column(db.String(20), default = 'available') # available or issued
+    status = db.Column(db.String(20), default='available')  # available, issued, or hold, or returned
 
 
 

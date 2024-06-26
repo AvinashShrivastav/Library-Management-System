@@ -38,8 +38,10 @@ class BookIssue(db.Model):
     issue_date = db.Column(db.DateTime, nullable=True)
     return_date = db.Column(db.DateTime, nullable=True)
     status = db.Column(db.String(20), default='available')  # available, issued, or hold, or returned
-
-
+    feedback = db.Column(db.Text, nullable=True)  
+    # Define relationships to Book and User
+    book = db.relationship('Book', backref='issues', lazy=True)
+    user = db.relationship('User', backref='book_issues', lazy=True)
 
 
 # Define a Section model

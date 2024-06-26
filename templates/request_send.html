@@ -47,26 +47,26 @@
   </head>
 <body>
 
-    <!-- navbar -->
-
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link" href="templates\user_mybooks.html">My Books</a>
-            <a class="nav-link active" href="templates\user_books.html">Books <span class="sr-only">(current)</span></a>
-            <a class="nav-link" href="#">Stats</a>
-            <a class="nav-link" href="#">{{user.name}}</a>
-          </div>
-          <div class="d-flex align-items-center">
-            <button type="button" class="btn btn-light">Logout</button>
-          </div>
-        </div>
-      </nav>        
-    <!-- navbar end -->
+  <!-- navbar start -->
+  <nav class="navbar navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/user/{{user.id}}">My Books</a>
+        <a class="nav-link" href="/books{{user.id}}">Books</a>
+        <a class="nav-link" href="/userstats">Stats</a>
+        <a class="nav-link" href="/userprofile/{{user.id}}">{{user.name}}</a>
+      </div>
+      <div class="d-flex align-items-center">
+        <a href="/login" class="btn btn-light">Logout</a>
+      </div>
+    </div>
+  </nav>
+  <!-- navbar end -->
 
     <!-- main-section start -->
     <div class="main">
@@ -120,14 +120,13 @@
     <style>
         
     </style>
-
-    <!-- footer-section-starts  -->
-    <footer>  
-        <div class="footer">
-            @Copyright IITM BS Project by Avinash Shrivastava
-        </div>
-    </footer>
-    <!-- footer-section-ends  -->
+  <!-- footer-section-starts  -->
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+      <span class="text-muted">&copy; IITM BS Project by Avinash Shrivastava</span>
+    </div>
+  </footer>
+  <!-- footer-section-ends  -->
 
 
 

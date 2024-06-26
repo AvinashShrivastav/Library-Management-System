@@ -21,34 +21,35 @@
   <!-- navbar -->
 
   <nav class="navbar navbar-expand-md navbar-light bg-light">
-    <a class="navbar-brand" href="#">Librarian Dashboard</a>
+    <a class="navbar-brand" href="/librarian">Librarian Dashboard</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" href="#">Books <span class="sr-only">(current)</span></a>
-        <a class="nav-link" href="/admin_req">Book Requests</a>
-        <a class="nav-link" href="#">Stats </a>
-        <a class="nav-link" href="#">{{user.name}}</a>
+        <a class="nav-link active" href="/librarian">Dashboard</a>
+        <a class="nav-link" href="/books/{{user.id}}">Books</a>
+        <a class="nav-link" href="/admin_req/{{user.id}}">Book Requests</a>
+        <a class="nav-link" href="/userstats">Stats </a>
+        <a class="nav-link" href="/userprofile/{{user.id}}">{{user.name}}</a>
       </div>
       <div class="d-flex align-items-center">
-        <button type="button" class="btn btn-light">Logout</button>
+        <a  href="/" type="button" class="btn btn-light">Logout</a>
       </div>
     </div>
   </nav>
   <!-- navbar end -->
   <div class="main">
-    <!-- search-box -->
-    <div class="navbar">
-      <a class="navbar-brand">Welcome to Dashboard!</a>
-      <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Filter</button>
-      </form>
+      <!-- search-box start-->
+      <div class="navbar">
+        <a class="navbar-brand">Welcome to Dashboard!</a>
+        <form class="form-inline" action="/search/{{user.id}}" method="get">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
+          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Filter</button>
+        </form>
     </div>
-    <!-- search-box -->
+    <!-- search-box end -->
 
 
     <!-- if no section is present -->
@@ -165,13 +166,13 @@
   </script>
 
 
-
-
-  <footer>
-    <div class="footer">
-      @Copyright IITM BS Project by Avinash Shrivastava
+  <!-- footer-section-starts  -->
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+      <span class="text-muted">&copy; IITM BS Project by Avinash Shrivastava</span>
     </div>
   </footer>
+  <!-- footer-section-ends  -->
 </body>
 
 </html>

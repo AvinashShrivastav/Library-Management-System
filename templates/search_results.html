@@ -23,6 +23,7 @@
             <a class="nav-link" href="templates\user_mybooks.html">My Books</a>
             <a class="nav-link active" href="templates\user_books.html">Books <span class="sr-only">(current)</span></a>
             <a class="nav-link" href="#">Stats</a>
+            <a class="nav-link" href="#">{{user.name}}</a>
           </div>
           <div class="d-flex align-items-center">
             <button type="button" class="btn btn-light">Logout</button>
@@ -35,9 +36,9 @@
     <div class="main">
         <!-- search-box -->
         <div class="navbar">
-            <a class="navbar-brand">Add new section</a>
+            <a class="navbar-brand">Books</a>
             <form class="form-inline">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
               <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Filter</button>
             </form>
         </div>
@@ -45,37 +46,39 @@
 
 
         <!-- book-section starts -->
+        {% if books | length == 0 %}
+        <h5>No matching book or author! </h5>
+        {% else %}
         <div class="book-section">
-
-          <div class="add-sec-card">
-            <div class="sec-data">
-              <form action="/add_section" method="post" enctype="multipart/form-data">
-              <div><label for="sec_title">Title:</label><input type="text" name="sec_title" id="sec_title" placeholder="Section_History"> </div>
-             <div><label for="sec_date">Date:</label><input type="date" name="sec_date"></div> 
-              <div><label for="sec_img">Image:</label><input type="file" name="sec_img" id=""></div>
-              <div><label for="sec_desc">Description:</label><input type="textarea" name = "sec_desc" placeholder="Enter section description here"></div>
-              <div><input class="btn btn-warning" value="Cancel"></input>
-              <input type="submit" class="btn btn-primary" value="Add"></input>
-            </form>
-            </div></div>
+          {%for book in books%}
+          <div class="book-card">
+            <div class="book-img">
+              <img src="../static/images/Designer.jpeg" alt="book-image">
+            </div>
+            <div class="book-desc">
+              <h5 class="book-title">{{book.name}}</h5>
+              {% for author in book.authors %}
+              <p class="book-author">{{author.name}}</p>
+              {% endfor %}
+              <p class="book-sec">{{book.section.name}}</p>
+              <a href="/request/{{user.id}}/{{book.id}}" class="btn btn-outline-primary"> Request</a>
+            </div>
           </div>
-
+          {%endfor%}
         </div>
+        {% endif %}
         <!-- book-section ends -->
 
     </div>
     <!-- main-section end -->
 
-    <!-- footer-section-starts  -->
-    <footer>  
-        <div class="footer">
-            @Copyright IITM BS Project by Avinash Shrivastava
-        </div>
-    </footer>
-    <!-- footer-section-ends  -->
-<style>
-
-</style>
+  <!-- footer-section-starts  -->
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+      <span class="text-muted">&copy; IITM BS Project by Avinash Shrivastava</span>
+    </div>
+  </footer>
+  <!-- footer-section-ends  -->
 
 
 </body>

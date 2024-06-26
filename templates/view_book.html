@@ -36,7 +36,7 @@
 
       <!-- search-box start-->
       <div class="navbar">
-          <a class="navbar-brand">Boook Issues and Requests</a>
+          <a class="navbar-brand">Boook Issues and Requests </a>
           <form class="form-inline">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Filter</button>
@@ -50,6 +50,7 @@
                 <tr>
                     <th scope="col">Request ID</th>
                     <th scope="col">User ID</th>
+                    <th scope="col">User Name</th>
                     <th scope="col">Issue Date</th>
                     <th scope="col">Return Date</th>
                     <th scope="col">Status</th>
@@ -60,6 +61,7 @@
                     <tr>
                         <td>{{ issue.request_id }}</td>
                         <td>{{ issue.user_id }}</td>
+                        <td>{{ issue.user.name }}</td>
                         <td>{{ issue.issue_date.strftime('%Y-%m-%d')  }}</td>
                         <td>{{ issue.return_date.strftime('%Y-%m-%d')  }}</td>
                         <td>{{ issue.status }}</td>
@@ -83,12 +85,13 @@
 
 
 
-
-    <footer>
-        <div class="footer">
-            @Copyright IITM BS Project by Avinash Shrivastava
-        </div>
-    </footer>
+  <!-- footer-section-starts  -->
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container text-center">
+      <span class="text-muted">&copy; IITM BS Project by Avinash Shrivastava</span>
+    </div>
+  </footer>
+  <!-- footer-section-ends  -->
 
 </body>
 </html>
